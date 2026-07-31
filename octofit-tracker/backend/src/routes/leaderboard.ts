@@ -1,5 +1,5 @@
 import express from 'express';
-import LeaderboardEntry from '../models/LeaderboardEntry.js';
+import LeaderboardEntry from '../models/LeaderboardEntry.ts';
 
 const router = express.Router();
 

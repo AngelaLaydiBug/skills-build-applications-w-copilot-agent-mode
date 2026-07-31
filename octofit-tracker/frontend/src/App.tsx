@@ -1,42 +1,41 @@
-import { useEffect, useState } from 'react';
-import { fetchUsers, fetchActivities, API_BASE_URL } from './api';
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import Activities from './components/Activities';
+import Leaderboard from './components/Leaderboard';
+import Teams from './components/Teams';
+import Users from './components/Users';
+import Workouts from './components/Workouts';
+import { getApiBaseUrl } from './api';
 
 function App() {
-  const [users, setUsers] = useState<any[]>([]);
-  const [activities, setActivities] = useState<any[]>([]);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const [usersData, activitiesData] = await Promise.all([fetchUsers(), fetchActivities()]);
-        setUsers(usersData);
-        setActivities(activitiesData);
-      } catch (err) {
-        setError('Unable to fetch API data.');
-      }
-    }
-
-    loadData();
-  }, []);
-
   return (
-    <div className="app-container">
-      <header>
-        <h1>OctoFit Tracker</h1>
-        <p>Modern multi-tier React + Express + MongoDB starter.</p>
-        <p>API base URL: <code>{API_BASE_URL}</code></p>
-      </header>
-      {error && <div className="error">{error}</div>}
-      <section>
-        <h2>Users</h2>
-        <pre>{JSON.stringify(users, null, 2)}</pre>
-      </section>
-      <section>
-        <h2>Activities</h2>
-        <pre>{JSON.stringify(activities, null, 2)}</pre>
-      </section>
-    </div>
+    <BrowserRouter>
+      <div className="container py-4">
+        <header className="mb-4">
+          <h1>OctoFit Tracker</h1>
+          <p className="text-muted">React 19 presentation tier for the multi-tier application.</p>
+          <p className="text-muted">API base URL: {getApiBaseUrl()}</p>
+          <p className="text-muted">Define VITE_CODESPACE_NAME in .env.local for Codespaces URLs.</p>
+        </header>
+
+        <nav className="nav nav-pills mb-4">
+          <NavLink className="nav-link" to="/">Home</NavLink>
+          <NavLink className="nav-link" to="/users">Users</NavLink>
+          <NavLink className="nav-link" to="/teams">Teams</NavLink>
+          <NavLink className="nav-link" to="/activities">Activities</NavLink>
+          <NavLink className="nav-link" to="/workouts">Workouts</NavLink>
+          <NavLink className="nav-link" to="/leaderboard">Leaderboard</NavLink>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<div className="alert alert-info">Select a section to explore the app.</div>} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/activities" element={<Activities />} />
+          <Route path="/workouts" element={<Workouts />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 

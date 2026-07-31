@@ -1,3 +1,6 @@
+/**
+ * Seed the octofit_db database with test data
+ */
 import mongoose from 'mongoose';
 import User from '../models/User.ts';
 import Team from '../models/Team.ts';

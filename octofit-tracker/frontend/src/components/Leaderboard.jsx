@@ -8,7 +8,12 @@ function Leaderboard() {
   useEffect(() => {
     async function loadLeaderboard() {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/leaderboard/`);
+          const codespace = import.meta.env?.VITE_CODESPACE_NAME;
+          const leaderboardUrl = codespace
+            ? `https://${codespace}-8000.app.github.dev/api/leaderboard/`
+            : `${getApiBaseUrl()}/api/leaderboard/`;
+
+          const response = await fetch(leaderboardUrl);
         const payload = await response.json();
         setEntries(normalizeCollection(payload));
       } catch (err) {

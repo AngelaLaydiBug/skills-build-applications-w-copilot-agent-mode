@@ -8,9 +8,14 @@ function Users() {
   useEffect(() => {
     async function loadUsers() {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/users/`);
-        const payload = await response.json();
-        setUsers(normalizeCollection(payload));
+          const codespace = import.meta.env?.VITE_CODESPACE_NAME;
+          const usersUrl = codespace
+            ? `https://${codespace}-8000.app.github.dev/api/users/`
+            : `${getApiBaseUrl()}/api/users/`;
+
+          const response = await fetch(usersUrl);
+          const payload = await response.json();
+          setUsers(normalizeCollection(payload));
       } catch (err) {
         setError('Unable to load users.');
       }

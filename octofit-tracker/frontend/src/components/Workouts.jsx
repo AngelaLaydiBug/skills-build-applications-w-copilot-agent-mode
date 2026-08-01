@@ -8,9 +8,14 @@ function Workouts() {
   useEffect(() => {
     async function loadWorkouts() {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/workouts/`);
-        const payload = await response.json();
-        setWorkouts(normalizeCollection(payload));
+          const codespace = import.meta.env?.VITE_CODESPACE_NAME;
+          const workoutsUrl = codespace
+            ? `https://${codespace}-8000.app.github.dev/api/workouts/`
+            : `${getApiBaseUrl()}/api/workouts/`;
+
+          const response = await fetch(workoutsUrl);
+          const payload = await response.json();
+          setWorkouts(normalizeCollection(payload));
       } catch (err) {
         setError('Unable to load workouts.');
       }

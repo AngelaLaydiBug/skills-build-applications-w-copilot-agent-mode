@@ -8,9 +8,14 @@ function Teams() {
   useEffect(() => {
     async function loadTeams() {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/teams/`);
-        const payload = await response.json();
-        setTeams(normalizeCollection(payload));
+          const codespace = import.meta.env?.VITE_CODESPACE_NAME;
+          const teamsUrl = codespace
+            ? `https://${codespace}-8000.app.github.dev/api/teams/`
+            : `${getApiBaseUrl()}/api/teams/`;
+
+          const response = await fetch(teamsUrl);
+          const payload = await response.json();
+          setTeams(normalizeCollection(payload));
       } catch (err) {
         setError('Unable to load teams.');
       }

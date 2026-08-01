@@ -8,7 +8,12 @@ function Activities() {
   useEffect(() => {
     async function loadActivities() {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/activities/`);
+        const codespace = import.meta.env?.VITE_CODESPACE_NAME;
+        const activitiesUrl = codespace
+          ? `https://${codespace}-8000.app.github.dev/api/activities/`
+          : `${getApiBaseUrl()}/api/activities/`;
+
+        const response = await fetch(activitiesUrl);
         const payload = await response.json();
         setActivities(normalizeCollection(payload));
       } catch (err) {

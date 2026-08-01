@@ -13,7 +13,7 @@ export function getApiBaseUrl() {
   const env = (import.meta as ImportMeta).env;
   const codespaceName = env?.VITE_CODESPACE_NAME || env?.CODESPACE_NAME;
 
-  if (codespaceName) {
+  if (codespaceName && codespaceName !== 'undefined') {
     return `https://${codespaceName}-${DEFAULT_API_PORT}.app.github.dev`;
   }
 
